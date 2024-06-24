@@ -5,7 +5,6 @@ class Game
   attr_accessor :guesses, :word, :current_word, :letters, :choice, :word_length, :wrong_choices
 
   def initialize
-    @guesses = 15
     @wrong_choices = []
     get_new_word
     puts "Weclome to hangman!"
@@ -22,6 +21,7 @@ class Game
 
 
   def get_new_word
+    @guesses = 15
     @word = WordDictionary.new
     @current_word = word.get_random_word[0]
     @word_length = current_word.length
@@ -29,13 +29,13 @@ class Game
   end
 
   def display_letters
-    # puts current_word #*this should be deleted when done
     puts @letters.join
     get_choice
   end
 
   def get_choice
-    puts "Please choose a letter"
+    word_found?
+    print "Please choose a letter: "
     @choice = gets.chomp.downcase
 
     inclusion_check if ('a'..'z').include?(@choice) || ('A'..'Z').include?(@choice)
@@ -71,9 +71,10 @@ class Game
 
   def out_of_guesses?
     if @guesses == 0
+      puts " "
       puts "You lost!"
       puts "The word was '#{@current_word}'"
-      exit
+      replay?
     end
   end
 
@@ -82,7 +83,30 @@ class Game
    puts "Wrong letters: #{@wrong_choices}"
   end
 
-end
+  def word_found?
+    if @letters == @current_word.split("")
+      puts ""
+      puts "Congrats! You found the word!"
+      replay?
+    end
+  end
 
+  def replay?
+    puts "Would you like to replay?(y/n)"
+    ans = gets.chomp.downcase
+
+    if ans == 'y'
+      get_new_word
+      display_letters
+      inclusion_check
+    elsif ans == 'n'
+      puts "Have a nice day!"
+      exit
+    else
+      puts "That's not a valid option."
+      replay?
+    end
+  end
+end
 
 play = Game.new
