@@ -1,7 +1,6 @@
 require './lib/word_dictionary'
 
 class Game
-
   attr_accessor :guesses, :word, :current_word, :letters, :choice, :word_length, :wrong_choices
 
   def initialize
@@ -92,7 +91,7 @@ class Game
   end
 
   def replay?
-    puts "Would you like to replay?(y/n)"
+    puts "Would you like to play again with a new word?(y/n)"
     ans = gets.chomp.downcase
 
     if ans == 'y'
@@ -108,5 +107,3 @@ class Game
     end
   end
 end
-
-play = Game.new
