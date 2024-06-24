@@ -2,18 +2,19 @@ require './lib/word_dictionary'
 
 class Game
 
-  attr_accessor :guesses, :word, :current_word, :letters, :choice, :word_length
+  attr_accessor :guesses, :word, :current_word, :letters, :choice, :word_length, :wrong_choices
 
   def initialize
     @guesses = 15
+    @wrong_choices = []
     get_new_word
     puts "Weclome to hangman!"
     puts ""
-    puts "A random word will be selected and you you're gonna try to guess it!"
+    puts "A random word will be selected and you're gonna try to guess it!"
     puts ""
     puts "The word will contain 5-12 letters."
     puts ""
-    puts "You have #{guesses}."
+    puts "You have #{guesses} tries."
     puts ""
     display_letters
     inclusion_check
@@ -48,11 +49,12 @@ class Game
   def inclusion_check
     if !@current_word.include?(@choice)
       @guesses -= 1
+      display_wrong_choices
       out_of_guesses?
       puts ""
       puts "Nope!"
       puts ""
-      puts "You have #{guesses} left."
+      puts "You have #{guesses} tries left."
       puts ""
       display_letters
     else
@@ -73,6 +75,11 @@ class Game
       puts "The word was '#{@current_word}'"
       exit
     end
+  end
+
+  def display_wrong_choices
+   @wrong_choices.push(@choice) unless @wrong_choices.include?(@choice)
+   puts "Wrong letters: #{@wrong_choices}"
   end
 
 end
