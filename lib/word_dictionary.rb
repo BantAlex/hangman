@@ -20,6 +20,3 @@ class WordDictionary
   end
 
 end
-
-
-test = WordDictionary.new
