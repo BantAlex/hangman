@@ -1,7 +1,7 @@
 require './lib/word_dictionary'
 require './lib/save_game'
 
-class Game
+class Game < SaveGame
   attr_accessor :guesses, :word, :current_word, :letters, :choice, :word_length, :wrong_choices
 
   def initialize
@@ -35,10 +35,11 @@ class Game
 
   def get_choice
     word_found?
-    print "Please choose a letter: "
+    puts "You can save the game by typing 'save'"
+    print "Please choose a letter or save the game: "
     @choice = gets.chomp.downcase
 
-    #save_game if @choice == 'save'
+    save_game if @choice == 'save'
     inclusion_check if ('a'..'z').include?(@choice) || ('A'..'Z').include?(@choice)
 
     puts ""
@@ -82,6 +83,12 @@ class Game
   def display_wrong_choices
    @wrong_choices.push(@choice) unless @wrong_choices.include?(@choice)
    puts "Wrong letters: #{@wrong_choices}"
+  end
+
+  def save_game
+    SaveGame.new(@current_word,@letters,@guesses,@wrong_choices)
+    puts "See ya soon"
+    exit
   end
 
   def word_found?
