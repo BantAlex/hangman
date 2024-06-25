@@ -1,4 +1,5 @@
 require './lib/word_dictionary'
+require './lib/save_game'
 
 class Game
   attr_accessor :guesses, :word, :current_word, :letters, :choice, :word_length, :wrong_choices
@@ -37,6 +38,7 @@ class Game
     print "Please choose a letter: "
     @choice = gets.chomp.downcase
 
+    #save_game if @choice == 'save'
     inclusion_check if ('a'..'z').include?(@choice) || ('A'..'Z').include?(@choice)
 
     puts ""
