@@ -1,15 +1,19 @@
 ---
-:word: cashiers
+:word: navigator
 :letters:
+- "n"
+- a
+- '_ '
+- '_ '
 - '_ '
 - a
-- s
+- t
 - '_ '
-- '_ '
-- '_ '
-- '_ '
-- s
-:tries_left: 13
+- r
+:tries_left: 9
 :wrong_choices:
+- c
 - "y"
-- "n"
+- l
+- p
+- s

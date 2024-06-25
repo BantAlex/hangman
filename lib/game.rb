@@ -1,13 +1,17 @@
 require './lib/word_dictionary'
 require './lib/save_game'
+require 'yaml'
 
 class Game < SaveGame
-  attr_accessor :guesses, :word, :current_word, :letters, :choice, :word_length, :wrong_choices
+  attr_accessor :guesses, :word, :current_word, :letters, :choice, :word_length, :wrong_choices, :saved_info
 
   def initialize
+    puts "==Ruby Hangman Game=="
+  end
+
+  def new_game
     @wrong_choices = []
     get_new_word
-    puts "Weclome to hangman!"
     puts ""
     puts "A random word will be selected and you're gonna try to guess it!"
     puts ""
@@ -18,7 +22,6 @@ class Game < SaveGame
     display_letters
     inclusion_check
   end
-
 
   def get_new_word
     @guesses = 15
@@ -35,6 +38,7 @@ class Game < SaveGame
 
   def get_choice
     word_found?
+    puts ""
     puts "You can save the game by typing 'save'"
     print "Please choose a letter or save the game: "
     @choice = gets.chomp.downcase
@@ -91,6 +95,18 @@ class Game < SaveGame
     exit
   end
 
+  def load_game
+    @saved_info = YAML.load_file('./saved_game/saved_file.yaml')
+    @current_word = @saved_info[:word]
+    @letters = @saved_info[:letters]
+    @guesses = @saved_info[:tries_left]
+    @wrong_choices = @saved_info[:wrong_choices]
+    puts "Welcome back!"
+    puts ""
+    display_letters
+    inclusion_check
+  end
+
   def word_found?
     if @letters == @current_word.split("")
       puts ""
@@ -104,9 +120,7 @@ class Game < SaveGame
     ans = gets.chomp.downcase
 
     if ans == 'y'
-      get_new_word
-      display_letters
-      inclusion_check
+      new_game
     elsif ans == 'n'
       puts "Have a nice day!"
       exit
